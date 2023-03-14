@@ -1,19 +1,19 @@
-## Índice
+# Índice
 
--[Web estática y web dinámica](#web-estatica)
+-[Web estática y web dinámica](#Web estática y web dinámica)
 -[Fetch](#fetch)
- - [Uso del fetch](#usodelfetch)
- - [Promesas](#promesas)
- - [Async/Await](#asyncawait)
+ - [Uso del fetch](#Uso del fetch)
+ - [Promesas](#Promesas)
+ - [Async/Await](#Async/Await)
 
-# Web estática y web dinámica {#web-estatica}
+# Web estática y web dinámica
 
 Las páginas **web estáticas** son aquellas que se presentan tal y como fueron diseñadas y codificadas originalmente, y no cambian su contenido en función de la interacción del usuario. Estas páginas web son muy útiles cuando se desea presentar información que no cambia con frecuencia y que no requiere una actualización constante. Además, son muy rápidas en la carga, ya que no necesitan generar contenido nuevo cada vez que un usuario accede a ellas. También son más seguras, ya que no permiten la ejecución de scripts o la modificación de la base de datos.
 
 Por otro lado, las páginas **web dinámicas** sí permiten la interacción del usuario y pueden cambiar su contenido en función de las acciones que realice. Estas páginas suelen ser utilizadas para aplicaciones web, como redes sociales o tiendas online, ya que necesitan una interacción constante con el usuario y un acceso a una base de datos para mostrar información actualizada. 
 A diferencia de las páginas web estáticas, las dinámicas requieren más tiempo de carga, porque necesitan conectarse con una base de datos para generar contenido nuevo cada vez que un usuario accede a ellas. Sin embargo, son más fáciles de actualizar y permiten una mayor escalabilidad, lo que significa que pueden manejar un mayor volumen de usuarios y contenido sin perder su funcionalidad.
 	 
-# Fetch {#fetch}
+# Fetch
 
 Fetch es una herramienta de JavaScript que se utiliza para obtener y enviar datos desde y hacia un servidor. Es una forma moderna y más fácil de hacerlo que la técnica antigua XMLHttpRequest. Se utiliza para actualizar partes de una página sin recargarla por completo. También se utiliza para enviar datos al servidor.
 
@@ -34,7 +34,7 @@ Ejemplo recuperando un archivo .json:
 
 En este caso, utilizaremos el **metodo finally** para que el mensaje de carga desaparezca tanto si la solicitud es exitosa como si falla. Hay que tener en cuenta que finally se ejecutará siempre, aunque capture un error.
 
-## Uso del fetch {#usodelfetch}
+## Uso del fetch
 
 Sabiendo la sintaxis básica del fetch, hay unos conceptos importantes que son necesarios saber:
 -   **Headers**: Los headers son objetos que contienen información adicional sobre la solicitud o respuesta. Puedes agregar headers a una solicitud fetch para incluir información como el tipo de contenido que esperas recibir, la autorización, el tipo de codificación, entre otros.
@@ -53,7 +53,7 @@ Sabiendo la sintaxis básica del fetch, hay unos conceptos importantes que son n
 
 En este ejemplo, estamos enviando un objeto JSON que contiene un nombre y una dirección de correo electrónico al servidor en el cuerpo de una solicitud POST. También incluimos un header 'Content-Type' para indicar que el cuerpo de la solicitud es un objeto JSON.
 
-### Promesas: {#promesas}
+### Promesas:
 
 
 Las promesas son una forma de hacer que el trabajo asíncrono sea más fácil de manejar en JavaScript. En lugar de bloquear el código, las promesas permiten que el código continúe ejecutándose y procesando los resultados a medida que estén disponibles, lo que lo hace más escalable y fácil de leer.
@@ -67,7 +67,7 @@ Las promesas son una forma de hacer que el trabajo asíncrono sea más fácil de
  - Luego, llamamos al método then de la promesa para manejar el resultado cuando la promesa se resuelve exitosamente. En este caso, simplemente imprimimos el resultado en la consola.
  - Finalmente, utilizamos el método catch para manejar cualquier error que pueda ocurrir durante la ejecución de la promesa.
 
-### Async/Await {#asyncawait}
+### Async/Await
 Async/await es una forma más moderna de manejar las promesas en JavaScript y hacer el código asíncrono más legible y fácil de entender. Aquí hay un ejemplo de cómo usar async/await para hacer una solicitud a una API usando el método fetch:
 
 > async  function  fetchData() { try { const response = await 
