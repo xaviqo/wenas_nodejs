@@ -1,7 +1,9 @@
 # Índice
 
 -[Web estática y web dinámica](#Web-estática-y-web-dinámica)
+
 -[Fetch](#fetch)
+
  - [Uso del fetch](#Uso-del-fetch)
  - [Promesas](#Promesas)
  - [Async/Await](#Async/Await)
