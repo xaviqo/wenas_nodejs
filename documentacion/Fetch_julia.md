@@ -31,7 +31,7 @@ Ejemplo recuperando un archivo .json:
 >
 >const message = document.getElementById('message'); message.textContent = 'Cargando...';
 >
-> fetch('https://tujson.com/todos/1') .then(response
+> fetch('https://tuJson.com/todos/1') .then(response
 > => response.json()) .then(data =>  console.log(data)) .catch(error =>  console.error(error)) .finally(() => { message.textContent = ''; });
 
 En este caso, utilizaremos el **metodo finally** para que el mensaje de carga desaparezca tanto si la solicitud es exitosa como si falla. Hay que tener en cuenta que finally se ejecutará siempre, aunque capture un error.
@@ -43,7 +43,7 @@ Sabiendo la sintaxis básica del fetch, hay unos conceptos importantes que son n
 - **Body**: en una solicitud fetch es el contenido que se envía con la solicitud. Puede ser cualquier tipo de datos, como una cadena de texto, un objeto JSON, un archivo binario,
 -   **Verbos/Method**: Se utilizan para indicar el tipo de acción que se va a realizar en el servidor. Los métodos más comunes son **GET** (obtener datos), **POST** (enviar datos), **PUT** (actualizar datos), **DELETE** (eliminar datos).
     
-> let data = { name: 'Juan', email: 'juan@example.com' };
+> let data = { name: 'Juan', email: 'juan@ejemplo.com' };
 > 
 > fetch('https://tuApi.com/user', {
 >  **method**: 'POST', 
