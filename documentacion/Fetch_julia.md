@@ -73,7 +73,7 @@ Las promesas son una forma de hacer que el trabajo asíncrono sea más fácil de
 Async/await es una forma más moderna de manejar las promesas en JavaScript y hacer el código asíncrono más legible y fácil de entender. Aquí hay un ejemplo de cómo usar async/await para hacer una solicitud a una API usando el método fetch:
 
 > async  function  fetchData() { try { const response = await 
-> fetch('https://jsonplaceholder.typicode.com/users'); const data =
+> fetch('https://tuApi.com/users'); const data =
 > await response.json(); console.log(data); } catch (error) {
 > console.log(error); } }
 
