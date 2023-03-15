@@ -24,8 +24,7 @@ La sintaxis básica de Fetch es la siguiente:
 > fetch(url) .then(response => response.json()) .then(data => 
 > console.log(data)) .catch(error =>  console.error(error));
 
-Se le pasa una URL para realizar la solicitud y devuelve una promesa que se puede procesar con diferentes métodos de respuesta. Se pueden agregar headers a la solicitud para incluir información adicional, y se pueden enviar diferentes tipos de datos en el cuerpo de la solicitud. Además, existen diferentes verbos que indican el tipo de acción que se va a realizar en el servidor.
-
+Se le pasa una URL para realizar la solicitud y devuelve una promesa que se puede procesar con diferentes métodos de respuesta. Se pueden agregar headers a la solicitud para incluir información adicional, y se pueden enviar diferentes tipos de datos en el cuerpo de la solicitud. Además, existen diferentes verbos que indican el tipo de acción que se va a realizar.
 Ejemplo recuperando un archivo .json:
 
 >
