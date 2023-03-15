@@ -64,7 +64,7 @@ Las promesas son una forma de hacer que el trabajo asíncrono sea más fácil de
 > { console.log(result); // ¡Promesa resuelta! }).catch((error) => {
 > console.error(error); });
 
- - En este ejemplo, creamos una promesa que se resuelve después de 2 segundos utilizando el método setTimeout. Dentro del constructor de la promesa, pasamos dos funciones: resolve y reject, que se utilizan para resolver o rechazar la promesa, respectivamente.
+ - En este ejemplo, creamos una promesa que se resuelve después de 2 segundos utilizando el método setTimeout. Dentro del constructor de la promesa, pasamos dos funciones: resolve y reject, que se utilizan para resolver o rechazar la promesa.
  - Luego, llamamos al método then de la promesa para manejar el resultado cuando la promesa se resuelve exitosamente. En este caso, simplemente imprimimos el resultado en la consola.
  - Finalmente, utilizamos el método catch para manejar cualquier error que pueda ocurrir durante la ejecución de la promesa.
 
