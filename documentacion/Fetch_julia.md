@@ -39,7 +39,7 @@ En este caso, utilizaremos el **metodo finally** para que el mensaje de carga de
 
 Sabiendo la sintaxis básica del fetch, hay unos conceptos importantes que son necesarios saber:
 -   **Headers**: Los headers son objetos que contienen información adicional sobre la solicitud o respuesta. Se pueden agregar headers para incluir información como el tipo de contenido que esperas recibir, la autorización, el tipo de codificación, entre otros.
-- **Body**: en una solicitud fetch es el contenido que se envía con la solicitud. Puede ser cualquier tipo de datos, como una cadena de texto, un objeto JSON, un archivo binario,
+- **Body**: en una solicitud fetch es el contenido que se envía con la solicitud. Puede ser cualquier tipo de datos, como una cadena de texto, un objeto JSON, un archivo binario...
 -   **Verbos/Method**: Se utilizan para indicar el tipo de acción que se va a realizar en el servidor. Los métodos más comunes son **GET** (obtener datos), **POST** (enviar datos), **PUT** (actualizar datos), **DELETE** (eliminar datos).
     
 > let data = { name: 'Juan', email: 'juan@ejemplo.com' };
