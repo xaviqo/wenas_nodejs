@@ -1,0 +1,22 @@
+# Archivos de dependencias de Node.js
+node_modules/
+
+# Archivos generados durante la compilación
+dist/
+build/
+
+# Archivos de registro y depuración
+logs/
+*.log
+
+# Archivos de configuración local
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Otros archivos y directorios que no deben estar en control de versiones
+.DS_Store
+Thumbs.db
