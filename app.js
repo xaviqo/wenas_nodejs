@@ -1,8 +1,4 @@
-const Express = require('express');
-        const path = require('path');
-        const app = Express();
-        //instalar el paquete con 'npm install pg' para la bd
-        //coge las dependencias del pg, todo lo que tiene dentro
+var express = require('express');
 
 const { Pool } = require('pg');
 // Creamos una instancia de conexión a la base de datos
