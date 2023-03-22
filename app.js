@@ -1,4 +1,14 @@
-var express = require('express');
+const Express = require('express');
+const app = Express();
+
+// app.get('/',(req, res) =>{
+
+// })
+app.get('/', Express.static('public'))
+
+app.listen(3000, () => {
+ console.log('http://localhost:3000')
+})
 
 const { Pool } = require('pg');
 // Creamos una instancia de conexión a la base de datos
