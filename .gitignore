@@ -3,7 +3,6 @@
 node_modules/
 
 # Archivos generados durante la compilación
-dist/
 build/
 
 # Archivos de registro y depuración

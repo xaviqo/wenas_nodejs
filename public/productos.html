@@ -111,7 +111,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Simple Tables</h1>
+            <h1>Productos</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -119,7 +119,7 @@
 <!-- Button trigger modal -->
 <div class="d-flex m-3">
   <button type="button" class="btn btn-primary mx-auto" id="myInput" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Añadir
+    Añadir nuevo producto
   </button>
 </div>
 
@@ -225,12 +225,13 @@
 <script src="dist/js/demo.js"></script>
 
 <script>
-  var myModal = document.getElementById('exampleModal')
+var myModal = document.getElementById('exampleModal')
 var myInput = document.getElementById('myInput')
 
 myModal.addEventListener('shown.bs.modal', function () {
   myInput.focus()
 })
+
 </script>
 </body>
 
