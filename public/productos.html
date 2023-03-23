@@ -29,8 +29,6 @@
       </li>
     </ul>
 
-   
-
   </nav>
   <!-- /.navbar -->
 
@@ -214,7 +212,15 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
+<script defer>
+  var myModal = document.getElementById('exampleModal')
+  var myInput = document.getElementById('myInput')
+  
+  myModal.addEventListener('shown.bs.modal', function () {
+    myInput.focus()
+  })
+  
+  </script>
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -224,15 +230,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 
-<script>
-var myModal = document.getElementById('exampleModal')
-var myInput = document.getElementById('myInput')
 
-myModal.addEventListener('shown.bs.modal', function () {
-  myInput.focus()
-})
-
-</script>
 </body>
 
 </html>

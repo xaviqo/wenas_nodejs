@@ -1,19 +1,12 @@
 var express = require('express');
-
+const path = require('path');
+const app = express();
 const { Pool } = require('pg');
-// Creamos una instancia de conexión a la base de datos
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'root',
-  port: 5433,
-});
-// Conectamos a la base de datos
-pool.connect((err, client, done) => {
-  if (err) {
-    console.error('Error de conexión:', err);
-  } else {
-    console.log('Conexión a la base de datos establecida');
-  }
-});
+
+  app.use('/', express.static(__dirname + '/public'));
+
+  app.use('api/productos', require('./routes/productos'));
+
+  app.listen(3000, () => {
+    console.log('Servidor en excecució a http://localhost:3000');
+})
