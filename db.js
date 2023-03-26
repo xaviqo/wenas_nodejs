@@ -4,9 +4,9 @@ const fs = require('fs');
 const pool = new Pool(JSON.parse(fs.readFileSync(__dirname + '/public/db_credentials.json')));
 
 const db = {
-    query: (str) => async (str) => {
-        pool.connect()
-        return await pool.query(str)
+    query: async (str) => {
+        pool.connect();
+        return await pool.query(str);
     },
     /*execute: async (str) => {
         pool.connect()

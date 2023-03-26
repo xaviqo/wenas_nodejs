@@ -143,7 +143,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Fixed Header Table</h3>
+                <h3 class="card-title">Productos</h3>
 
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
@@ -162,26 +162,20 @@
                 <table class="table table-head-fixed text-nowrap">
                   <thead>
                     <tr>
-                      <th>ID</th>
-                      <th>User</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                      <th>Reason</th>
+                      <th>Category id</th>
+                      <th>Discontinued</th>
+                      <th>Product id</th>
+                      <th>Product name</th>
+                      <th>Quantity per unit</th>
+                      <th>Reorder level</th>
+                      <th>Suplier id</th>
+                      <th>Unit price</th>
+                      <th>Units in stock</th>
+                      <th>Units on order</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                      <td>
-                        <a href="#"><i class="fas fa-trash-alt m-2"></i></a>
-                        <a href="#"><i class="far fa-edit m-2"></i></a>
-                      </td>
-                    </tr>
+                  <tbody id="cuerpoTabla">
                   </tbody>
                 </table>
               </div>
@@ -220,7 +214,79 @@
     myInput.focus()
   })
   
-  </script>
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/productos').then(response => response.json()).then((data) => {
+      console.log(data);
+      data.forEach(element => {
+        
+        let tbody = document.getElementById('cuerpoTabla');
+        let tr = document.createElement('tr');
+
+        let categoryId = document.createElement('td');
+        categoryId.innerHTML = element.category_id;
+        tr.appendChild(categoryId);
+
+        let discounted = document.createElement('td');
+        discounted.innerHTML = element.discontinued;
+        tr.append(discounted);
+        
+        let productId = document.createElement('td');
+        productId.innerHTML = element.product_id;
+        tr.append(productId);
+
+        let productName = document.createElement('td');
+        productName.innerHTML = element.product_name;
+        tr.append(productName);
+
+        let quantityPerUnit = document.createElement('td');
+        quantityPerUnit.innerHTML = element.quantity_per_unit;
+        tr.append(quantityPerUnit);
+
+        let reorderLevel = document.createElement('td');
+        reorderLevel.innerHTML = element.reorder_level;
+        tr.append(reorderLevel);
+
+        let suplierId = document.createElement('td');
+        suplierId.innerHTML = element.suplier_id;
+        tr.append(suplierId);
+
+        let unitPrice = document.createElement('td');
+        unitPrice.innerHTML = element.unit_price;
+        tr.append(unitPrice);
+        
+        let unitsInStock = document.createElement('td');
+        unitsInStock.innerHTML = element.units_in_stock;
+        tr.append(unitsInStock);
+
+        let unitsOnOrder = document.createElement('td');
+        unitsOnOrder.innerHTML = element.units_on_order;
+        tr.append(unitsOnOrder);
+
+        let acciones = document.createElement('td');
+
+        let eliminar = document.createElement('a');
+        let iconEliminar = document.createElement('i');
+        iconEliminar.classList.add('fas', 'fa-trash-alt', 'm-2');
+        eliminar.appendChild(iconEliminar);
+        
+        let editar = document.createElement('a');
+        let iconEditar = document.createElement('i');
+        iconEditar.classList.add('fas', 'fa-edit', 'm-2');
+        editar.appendChild(iconEditar);
+
+        acciones.append(editar);
+        acciones.append(eliminar);
+        tr.append(acciones);
+
+        tbody.append(tr);
+
+      });
+    });
+  }); 
+  
+</script>
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
