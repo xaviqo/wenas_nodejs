@@ -2,6 +2,7 @@
 # Archivos de dependencias de Node.js
 node_modules/
 db_credentials.json
+.vscode
 # Archivos generados durante la compilación
 build/
 

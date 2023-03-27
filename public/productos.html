@@ -216,8 +216,10 @@
   
 </script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/productos').then(response => response.json()).then((data) => {
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('/api/productos')
+    .then(response => response.json())
+    .then((data) => {
       console.log(data);
       data.forEach(element => {
         
@@ -248,9 +250,9 @@
         reorderLevel.innerHTML = element.reorder_level;
         tr.append(reorderLevel);
 
-        let suplierId = document.createElement('td');
-        suplierId.innerHTML = element.suplier_id;
-        tr.append(suplierId);
+        let supplierId = document.createElement('td');
+        supplierId.innerHTML = element.supplier_id;
+        tr.append(supplierId);
 
         let unitPrice = document.createElement('td');
         unitPrice.innerHTML = element.unit_price;
@@ -265,10 +267,10 @@
         tr.append(unitsOnOrder);
 
         let acciones = document.createElement('td');
-
         let eliminar = document.createElement('a');
         let iconEliminar = document.createElement('i');
         iconEliminar.classList.add('fas', 'fa-trash-alt', 'm-2');
+        eliminar.addEventListener('click', () => deleteProduct(element.product_id));
         eliminar.appendChild(iconEliminar);
         
         let editar = document.createElement('a');
@@ -281,11 +283,44 @@
         tr.append(acciones);
 
         tbody.append(tr);
-
       });
     });
-  }); 
-  
+
+  function deleteProduct(id) {
+    fetch(`/api/productos/${id}`, {
+      method: 'DELETE'
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log(`Se ha borrado el producto con el ID ${id}`);
+      } else {
+        throw new Error(`No se ha podido borrar el producto con el ID ${id}`);
+      }
+    })
+    .catch(error => console.error(error));
+  }
+
+  function addProduct(product) {
+    //TODO HACER FORMULARIO Y QUE LLAME LA FUNCION PASANDOLE EL PRODUCTO
+  fetch(`/api/productos/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(product)
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log(`Se ha añadido el producto correctamente`);
+    } else {
+      throw new Error(`No se ha añadido el producto`);
+    }
+  })
+  .catch(error => console.error(error));
+}
+
+
+
 </script>
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
