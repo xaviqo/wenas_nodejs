@@ -5,14 +5,9 @@ const pool = new Pool(JSON.parse(fs.readFileSync(__dirname + '/public/db_credent
 
 const db = {
     //query
-    query: async (str) => {
+    query: async (str, optArray) => {
         pool.connect();
-        return await pool.query(str);
-    },
-    //modificar datos
-    execute: async (str) => {
-        pool.connect()
-        await pool.execute(str);
+        return await pool.query(str, optArray);
     }
 };
 
