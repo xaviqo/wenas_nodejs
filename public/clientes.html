@@ -123,7 +123,7 @@
       <!-- Button trigger modal -->
       <div class="d-flex m-3">
         <button type="button" class="btn btn-primary mx-auto" id="myInput" data-bs-toggle="modal"
-          data-bs-target="#exampleModal">
+          data-bs-target="#exampleModal" onclick="upCliente()">
           Añadir
         </button>
       </div>
@@ -167,16 +167,9 @@
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0" style="height: 300px;">
               <table class="table table-head-fixed text-nowrap">
-                <!-- <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Reason</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead> -->
+                <thead id="cabeceraTabla">
+
+                </thead>
                 <tbody id="cuerpoTabla">
                 </tbody>
               </table>
@@ -230,75 +223,57 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       fetch('/api/clientes').then(response => response.json()).then((data) => {
-        console.log(data);
+        let cabeceras = Object.keys(data[0]);
+        let row = document.createElement('tr');
+        let thead = document.getElementById('cabeceraTabla');
+        let tbody = document.getElementById('cuerpoTabla');
+        for (let c of cabeceras) {
+          let cell = document.createElement('th');
+          cell.innerHTML = c;
+          row.appendChild(cell);
+        }
         data.forEach(element => {
-
-          let tbody = document.getElementById('cuerpoTabla');
-          let tr = document.createElement('tr');
-
-          let categoryId = document.createElement('td');
-          categoryId.innerHTML = element.supplier_id;
-          tr.appendChild(categoryId);
-
-          let discounted = document.createElement('td');
-          discounted.innerHTML = element.company_name;
-          tr.append(discounted);
-
-          let productId = document.createElement('td');
-          productId.innerHTML = element.contact_title;
-          tr.append(productId);
-
-          let productName = document.createElement('td');
-          productName.innerHTML = element.address;
-          tr.append(productName);
-
-          let quantityPerUnit = document.createElement('td');
-          quantityPerUnit.innerHTML = element.city;
-          tr.append(quantityPerUnit);
-
-          let reorderLevel = document.createElement('td');
-          reorderLevel.innerHTML = element.region;
-          tr.append(reorderLevel);
-
-          let suplierId = document.createElement('td');
-          suplierId.innerHTML = element.postal_code;
-          tr.append(suplierId);
-
-          let unitPrice = document.createElement('td');
-          unitPrice.innerHTML = element.country;
-          tr.append(unitPrice);
-
-          let unitsInStock = document.createElement('td');
-          unitsInStock.innerHTML = element.phone;
-          tr.append(unitsInStock);
-
-          let unitsOnOrder = document.createElement('td');
-          unitsOnOrder.innerHTML = element.fax;
-          tr.append(unitsOnOrder);
-
-          let acciones = document.createElement('td');
-
+          let r = document.createElement('tr');
+          let valores = Object.values(element)
+          for (let valor of valores) {
+            let campo = document.createElement('td');
+            campo.innerHTML = valor;
+            r.appendChild(campo);
+          }
+          let borrar = document.createElement('td');
           let eliminar = document.createElement('a');
           let iconEliminar = document.createElement('i');
           iconEliminar.classList.add('fas', 'fa-trash-alt', 'm-2');
+          eliminar.addEventListener('click', () => deleteCliente(element.customer_id));
           eliminar.appendChild(iconEliminar);
 
           let editar = document.createElement('a');
           let iconEditar = document.createElement('i');
           iconEditar.classList.add('fas', 'fa-edit', 'm-2');
+          editar.addEventListener('click', () => upadateCliente(element.customer_id))
           editar.appendChild(iconEditar);
 
-          acciones.append(editar);
-          acciones.append(eliminar);
-          tr.append(acciones);
-
-          tbody.append(tr);
-
+          borrar.append(editar);
+          borrar.append(eliminar);
+          r.append(borrar);
+          tbody.appendChild(r)
         });
+        thead.appendChild(row);
       });
     });
 
+    function deleteCliente(id){
+      console.log(id)
+    }
+
+    function upadateCliente(id){
+      console.log(id)
+    }
+
+    function upCliente(){
+      console.log('up')
+    }
+
   </script>
 </body>
-
 </html>

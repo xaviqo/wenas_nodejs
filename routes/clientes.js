@@ -7,4 +7,10 @@ router.get('/', async(req, res) => {
     res.json(result.rows);
 });
 
+// router.delete('/:id', async(req, res) => {
+//     await db.query('DELETE FROM customers where customer_id = $1),[id];
+//     let result = await db.query('DELETE FROM customers where customer_id = $1' + req.params.id);
+//     res.json(result.rows);
+// });
+
 module.exports = router;

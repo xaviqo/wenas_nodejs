@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Archivos de dependencias de Node.js
 node_modules/
 db_credentials.json
@@ -21,6 +21,5 @@ logs/
 # Otros archivos y directorios que no deben estar en control de versiones
 .DS_Store
 Thumbs.db
-=======
 node_modules
->>>>>>> 3bd2ec6a8008f076f16372889e1e3c50b7c040e5
+
