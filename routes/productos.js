@@ -9,20 +9,46 @@ router.get('/', async(req, res) => {
 
 router.delete('/:id', async(req, res) => {
 
-    await db.execute('DELETE FROM order_details where product_id = ' + req.params.id);
-    let result = await db.execute('DELETE FROM products where product_id = ' + req.params.id);
-    res.json(result.rows);
-});
+    //let result = await db.query('DELETE FROM products where product_id = ' + req.params.id);
+    //res.json(result.rows);
 
-router.put('/', async (req, res) => {
     try {
-      const productId = req.params.id;
-      const product = req.body; 
-      await db.execute('UPDATE products SET name = ?, price = ?, description = ? WHERE product_id = ?', [product.name, product.price, product.description, productId]);
-      res.status(200).json({ message: `Producto con ID ${productId} actualizado correctamente.` });
+
+      let productId = req.params.id;
+      console.log(productId);
+    //  await db.query('DELETE FROM order_details where product_id = ' + req.params.id);
+
+      await db.query('DELETE FROM products where product_id = $1', 
+        [ productId ]);
+      res.status(200).json({ message: `Producto borrado correctamente.`, product_id: productId });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: `Error al actualizar el producto con ID ${productId}.` });
+      res.status(500).json({ message: `Error al eliminar el producto.` });
+    }
+});
+
+router.post('/', async (req, res) => {
+    try {
+      //todo devolver id de la respuesta para el mensaje
+      const maxProductId = await db.query('SELECT MAX(product_id) FROM products');
+      const nextProductId = maxProductId.rows[0].max + 1;
+      
+      const product = req.body; 
+      await db.query('INSERT into products VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', 
+        [ nextProductId,
+          product.product_name, 
+          product.supplier_id, 
+          product.category_id, 
+          product.quantity_per_unit, 
+          product.unit_price,
+          product.units_in_stock, 
+          product.units_on_order, 
+          product.reorder_level, 
+          product.discontinued]);
+      res.status(200).json({ message: `Producto añadido correctamente.`, product_id: nextProductId });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: `Error al añadido el producto.` });
     }
   });
   
