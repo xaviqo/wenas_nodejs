@@ -165,25 +165,13 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>User</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                      <th>Reason</th>
+                      <th>Name</th>
+                      <th>Description</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                      <td>
-                        <a href="#"><i class="fas fa-trash-alt m-2"></i></a>
-                        <a href="#"><i class="far fa-edit m-2"></i></a>
-                      </td>
-                    </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -225,12 +213,64 @@
 <script src="dist/js/demo.js"></script>
 
 <script>
-  var myModal = document.getElementById('exampleModal')
-var myInput = document.getElementById('myInput')
+  const tBody = document.querySelectorAll("tbody")[0];
+  window.onload = async () => {
+    await fetch('/api/categorias').then( res => {
+      return res.json()
+    }).then( data => {
+      data.forEach( category => {
+        const tr = document.createElement('tr');
 
-myModal.addEventListener('shown.bs.modal', function () {
-  myInput.focus()
-})
+        // ids
+        const categoryId = document.createElement('td');
+        categoryId.innerText = category.category_id;
+        tr.appendChild(categoryId);
+        // name
+        const categoryName = document.createElement('td');
+        categoryName.innerText = category.category_name;
+        tr.appendChild(categoryName);
+        // description
+        const categoryDescription = document.createElement('td');
+        categoryDescription.innerText = category.description;
+        tr.appendChild(categoryDescription);
+        // acciones
+        const actions = document.createElement('td');
+
+        const edit = document.createElement('a');
+        const editIcon = document.createElement('i')
+        editIcon.classList.add('fas','fa-edit','m-2');
+        edit.appendChild(editIcon);
+        edit.onclick = () => editCategory(category.category_id);
+
+        const del = document.createElement('a');
+        const delIcon = document.createElement('i');
+        delIcon.classList.add('fas','fa-trash-alt','m-2');
+        del.appendChild(delIcon);
+        del.onclick = () => deleteCategory(category)
+
+
+        actions.appendChild(edit);
+        actions.appendChild(del);
+
+        tr.appendChild(actions);
+
+        tBody.appendChild(tr);
+      });
+    }).catch( e => console.log(e));
+
+  }
+
+  const editCategory = (id) => {
+    console.log(id)
+  }
+
+  const deleteCategory = (category) => {
+    const ok = confirm('Quieres borrar la categoria '+category.category_name+' ?');
+    if (ok){
+
+    }
+  }
+
 </script>
 </body>
 

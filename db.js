@@ -8,10 +8,10 @@ const db = {
         pool.connect();
         return await pool.query(str);
     },
-    /*execute: async (str) => {
+    execute: async (str) => {
         pool.connect()
         await pool.execute(str);
-    }*/
+    }
 };
 
 module.exports = db;
