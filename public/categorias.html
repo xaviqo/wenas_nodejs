@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="dist/css/category.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -118,7 +119,7 @@
     </section>
 <!-- Button trigger modal -->
 <div class="d-flex m-3">
-  <button type="button" class="btn btn-primary mx-auto" id="myInput" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <button type="button" class="btn btn-primary mx-auto" id="addCategory" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Añadir
   </button>
 </div>
@@ -213,8 +214,13 @@
 <script src="dist/js/demo.js"></script>
 
 <script>
-  const tBody = document.querySelectorAll("tbody")[0];
   window.onload = async () => {
+    await loadCategories();
+    document.getElementById('addCategory').onclick = addCategory.modal;
+  }
+  const loadCategories = async () => {
+    const tBody = document.querySelectorAll("tbody")[0];
+    tBody.innerHTML = '';
     await fetch('/api/categorias').then( res => {
       return res.json()
     }).then( data => {
@@ -239,15 +245,16 @@
         const edit = document.createElement('a');
         const editIcon = document.createElement('i')
         editIcon.classList.add('fas','fa-edit','m-2');
+        editIcon.style.cursor = 'pointer';
         edit.appendChild(editIcon);
         edit.onclick = () => editCategory(category.category_id);
 
         const del = document.createElement('a');
         const delIcon = document.createElement('i');
         delIcon.classList.add('fas','fa-trash-alt','m-2');
+        delIcon.style.cursor = 'pointer';
         del.appendChild(delIcon);
         del.onclick = () => deleteCategory(category)
-
 
         actions.appendChild(edit);
         actions.appendChild(del);
@@ -257,19 +264,127 @@
         tBody.appendChild(tr);
       });
     }).catch( e => console.log(e));
-
   }
-
-  const editCategory = (id) => {
-    console.log(id)
+  const editCategory = async (id) => {
+    addCategory.modal();
+    await fetch(`/api/categorias/${id}`,{method:'GET'})
+            .then(res => res.json())
+            .then((data) => {
+              addCategory.addValues({
+                name: data.category_name,
+                desc: data.description
+              });
+            })
+            .catch(data => console.log(data));
   }
-
-  const deleteCategory = (category) => {
+  const deleteCategory = async (category) => {
     const ok = confirm('Quieres borrar la categoria '+category.category_name+' ?');
     if (ok){
-
+      await fetch(`/api/categorias/${category.category_id}`,{method:'DELETE'})
+              .then(res => res.json())
+              .then(data => alert(data.message))
+              .then(() => loadCategories())
+              .catch(data => console.log(data));
     }
   }
+
+  const addCategory = (() => {
+    function modal() {
+      const modal = document.createElement("div");
+      modal.classList.add("modal");
+
+      const modalContent = document.createElement("div");
+      modalContent.classList.add("modal-content");
+
+      const closeBtn = document.createElement("span");
+      closeBtn.classList.add("close");
+      closeBtn.innerHTML = "&times;";
+      modalContent.appendChild(closeBtn);
+
+      const nameLabel = document.createElement("label");
+      nameLabel.setAttribute("for", "name");
+      nameLabel.innerHTML = "Name: ";
+      modalContent.appendChild(nameLabel);
+
+      const nameInput = document.createElement("input");
+      nameInput.setAttribute("type", "text");
+      nameInput.setAttribute("id", "name");
+      nameInput.setAttribute("name", "name");
+      nameInput.setAttribute("required", "");
+      modalContent.appendChild(nameInput);
+
+      const descriptionLabel = document.createElement("label");
+      descriptionLabel.setAttribute("for", "description");
+      descriptionLabel.innerHTML = "Description: ";
+      modalContent.appendChild(descriptionLabel);
+
+      const descriptionInput = document.createElement("textarea");
+      descriptionInput.setAttribute("id", "description");
+      descriptionInput.setAttribute("name", "description");
+      descriptionInput.setAttribute("required", "");
+      modalContent.appendChild(descriptionInput);
+
+      const resetBtn = document.createElement("button");
+      resetBtn.setAttribute("type", "button");
+      resetBtn.setAttribute("id", "reset-form");
+      resetBtn.innerHTML = "Reiniciar";
+      modalContent.appendChild(resetBtn);
+
+      const submitBtn = document.createElement("button");
+      submitBtn.setAttribute("type", "button");
+      submitBtn.innerHTML = "Enviar";
+      modalContent.appendChild(submitBtn);
+
+      modal.appendChild(modalContent);
+
+      document.body.appendChild(modal);
+
+      closeBtn.addEventListener("click", function() {
+        modal.style.display = "none";
+      });
+
+      window.addEventListener("click", function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      });
+
+      submitBtn.addEventListener("click", function() {
+        send({ name: nameInput.value, desc: descriptionInput.value });
+      });
+
+      resetBtn.addEventListener("click", function() {
+        nameInput.value = '';
+        descriptionInput.value = '';
+      });
+      modal.style.display = 'block';
+    }
+
+    function send(category) {
+      fetch('/api/categorias', {
+        method: 'POST',
+        body: JSON.stringify(category)
+      })
+      .then(response => response.json())
+      .then(data => alert(data.message))
+      .then(() => loadCategories())
+      .then(() => modal.style.display = "none")
+      .catch(error => console.error(error));
+    }
+
+    function addValues(values){
+      console.log(values)
+      document.getElementById('name').value = values.name;
+      document.getElementById('description').value = values.desc;
+    }
+
+    return {
+      modal,
+      addValues,
+      send
+    };
+  })();
+
 
 </script>
 </body>
