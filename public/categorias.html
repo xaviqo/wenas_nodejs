@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="dist/css/category.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -47,7 +48,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="https://i.pinimg.com/474x/97/a1/7a/97a17a1178ec01c219657992db8c97f3.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">Usuario</a>
@@ -118,7 +119,7 @@
     </section>
 <!-- Button trigger modal -->
 <div class="d-flex m-3">
-  <button type="button" class="btn btn-primary mx-auto" id="myInput" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <button type="button" class="btn btn-primary mx-auto" id="addCategory" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Añadir
   </button>
 </div>
@@ -165,25 +166,13 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>User</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                      <th>Reason</th>
+                      <th>Name</th>
+                      <th>Description</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                      <td>
-                        <a href="#"><i class="fas fa-trash-alt m-2"></i></a>
-                        <a href="#"><i class="far fa-edit m-2"></i></a>
-                      </td>
-                    </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -225,12 +214,178 @@
 <script src="dist/js/demo.js"></script>
 
 <script>
-  var myModal = document.getElementById('exampleModal')
-var myInput = document.getElementById('myInput')
+  window.onload = async () => {
+    await loadCategories();
+    document.getElementById('addCategory').onclick = addCategory.modal;
+  }
+  const loadCategories = async () => {
+    const tBody = document.querySelectorAll("tbody")[0];
+    tBody.innerHTML = '';
+    await fetch('/api/categorias').then( res => {
+      return res.json()
+    }).then( data => {
+      data.forEach( category => {
+        const tr = document.createElement('tr');
 
-myModal.addEventListener('shown.bs.modal', function () {
-  myInput.focus()
-})
+        // ids
+        const categoryId = document.createElement('td');
+        categoryId.innerText = category.category_id;
+        tr.appendChild(categoryId);
+        // name
+        const categoryName = document.createElement('td');
+        categoryName.innerText = category.category_name;
+        tr.appendChild(categoryName);
+        // description
+        const categoryDescription = document.createElement('td');
+        categoryDescription.innerText = category.description;
+        tr.appendChild(categoryDescription);
+        // acciones
+        const actions = document.createElement('td');
+
+        const edit = document.createElement('a');
+        const editIcon = document.createElement('i')
+        editIcon.classList.add('fas','fa-edit','m-2');
+        editIcon.style.cursor = 'pointer';
+        edit.appendChild(editIcon);
+        edit.onclick = () => editCategory(category.category_id);
+
+        const del = document.createElement('a');
+        const delIcon = document.createElement('i');
+        delIcon.classList.add('fas','fa-trash-alt','m-2');
+        delIcon.style.cursor = 'pointer';
+        del.appendChild(delIcon);
+        del.onclick = () => deleteCategory(category)
+
+        actions.appendChild(edit);
+        actions.appendChild(del);
+
+        tr.appendChild(actions);
+
+        tBody.appendChild(tr);
+      });
+    }).catch( e => console.log(e));
+  }
+  const editCategory = async (id) => {
+    addCategory.modal();
+    await fetch(`/api/categorias/${id}`,{method:'GET'})
+            .then(res => res.json())
+            .then((data) => {
+              addCategory.addValues({
+                name: data.category_name,
+                desc: data.description
+              });
+            })
+            .catch(data => console.log(data));
+  }
+  const deleteCategory = async (category) => {
+    const ok = confirm('Quieres borrar la categoria '+category.category_name+' ?');
+    if (ok){
+      await fetch(`/api/categorias/${category.category_id}`,{method:'DELETE'})
+              .then(res => res.json())
+              .then(data => alert(data.message))
+              .then(() => loadCategories())
+              .catch(data => console.log(data));
+    }
+  }
+
+  const addCategory = (() => {
+    function modal() {
+      const modal = document.createElement("div");
+      modal.classList.add("modal");
+
+      const modalContent = document.createElement("div");
+      modalContent.classList.add("modal-content");
+
+      const closeBtn = document.createElement("span");
+      closeBtn.classList.add("close");
+      closeBtn.innerHTML = "&times;";
+      modalContent.appendChild(closeBtn);
+
+      const nameLabel = document.createElement("label");
+      nameLabel.setAttribute("for", "name");
+      nameLabel.innerHTML = "Name: ";
+      modalContent.appendChild(nameLabel);
+
+      const nameInput = document.createElement("input");
+      nameInput.setAttribute("type", "text");
+      nameInput.setAttribute("id", "name");
+      nameInput.setAttribute("name", "name");
+      nameInput.setAttribute("required", "");
+      modalContent.appendChild(nameInput);
+
+      const descriptionLabel = document.createElement("label");
+      descriptionLabel.setAttribute("for", "description");
+      descriptionLabel.innerHTML = "Description: ";
+      modalContent.appendChild(descriptionLabel);
+
+      const descriptionInput = document.createElement("textarea");
+      descriptionInput.setAttribute("id", "description");
+      descriptionInput.setAttribute("name", "description");
+      descriptionInput.setAttribute("required", "");
+      modalContent.appendChild(descriptionInput);
+
+      const resetBtn = document.createElement("button");
+      resetBtn.setAttribute("type", "button");
+      resetBtn.setAttribute("id", "reset-form");
+      resetBtn.innerHTML = "Reiniciar";
+      modalContent.appendChild(resetBtn);
+
+      const submitBtn = document.createElement("button");
+      submitBtn.setAttribute("type", "button");
+      submitBtn.innerHTML = "Enviar";
+      modalContent.appendChild(submitBtn);
+
+      modal.appendChild(modalContent);
+
+      document.body.appendChild(modal);
+
+      closeBtn.addEventListener("click", function() {
+        modal.style.display = "none";
+      });
+
+      window.addEventListener("click", function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      });
+
+      submitBtn.addEventListener("click", function() {
+        send({ name: nameInput.value, desc: descriptionInput.value });
+      });
+
+      resetBtn.addEventListener("click", function() {
+        nameInput.value = '';
+        descriptionInput.value = '';
+      });
+      modal.style.display = 'block';
+    }
+
+    function send(category) {
+      fetch('/api/categorias', {
+        method: 'POST',
+        body: JSON.stringify(category)
+      })
+      .then(response => response.json())
+      .then(data => alert(data.message))
+      .then(() => loadCategories())
+      .then(() => modal.style.display = "none")
+      .catch(error => console.error(error));
+    }
+
+    function addValues(values){
+      console.log(values)
+      document.getElementById('name').value = values.name;
+      document.getElementById('description').value = values.desc;
+    }
+
+    return {
+      modal,
+      addValues,
+      send
+    };
+  })();
+
+
 </script>
 </body>
 

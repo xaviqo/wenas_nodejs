@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+
+  <link rel="stylesheet" href="styles/style.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -35,7 +37,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="index.html" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Almacenes Wenas</span>
     </a>
@@ -45,7 +47,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="https://i.pinimg.com/474x/97/a1/7a/97a17a1178ec01c219657992db8c97f3.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">Usuario</a>
@@ -109,16 +111,21 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Productos</h1>
+   
           </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
 <!-- Button trigger modal -->
 <div class="d-flex m-3">
-  <p>Añadir nuevo producto</p>
-  <button type="button" class="btn btn-primary mx-auto" id="myInput" data-bs-toggle="modal" data-bs-target="#exampleModal">
+ <!-- <button type="button" class="btn btn-primary mx-auto" id="myInput" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Añadir producto
+  </button> -->
+  <button class="download-button mx-auto" id="myInput">
+    <div class="docs"><svg class="css-i6dzq1" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-width="2" stroke="currentColor" height="20" width="20" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line y2="13" x2="8" y1="13" x1="16"></line><line y2="17" x2="8" y1="17" x1="16"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Añadir producto</div>
+    <div class="download">
+      <svg class="css-i6dzq1" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-width="2" stroke="currentColor" height="24" width="24" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line y2="3" x2="12" y1="15" x1="12"></line></svg>
+    </div>
   </button>
 </div>
 
@@ -144,7 +151,7 @@
         <input type="number" class="form-control" id="category_id">
 
         <label for="quantity_per_unit" class="col-form-label">Cantidad por unidad:</label>
-        <input type="number" class="form-control" id="quantity_per_unit">
+        <input type="text" class="form-control" id="quantity_per_unit">
 
         <label for="unit_price" class="col-form-label">Precio por unidad:</label>
         <input type="number" step="0.01" class="form-control" id="unit_price">
@@ -163,7 +170,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         <button type="button" id="anadirProducto" class="btn btn-primary">Añadir producto</button>
       </div>
     </div>
@@ -189,7 +196,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0" style="height: 300px;">
-                <table class="table table-head-fixed text-nowrap">
+                <table class="table table-head-fixed text-nowrap table-hover">
                   <thead>
                     <tr>
                       <th>Category id</th>
@@ -236,31 +243,15 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
 <script defer>
-  var myModal = document.getElementById('exampleModal');
-  var myInput = document.getElementById('myInput');
-  
-  myInput.addEventListener('click', function () {
-    if (myModal.style.display !== 'block') {
-      myModal.style.display = 'block';
-    } else {
-      myModal.style.display = 'none';
-    }
-  });
 
-  var closeModal = document.getElementById('closeModal');
-  var saveChanges = document.getElementById('saveChanges');
-
-  closeModal.addEventListener('click', function(e) {
-    myModal.style.display = 'none';
-  });
-
-
-</script>
-
-<script>
 document.addEventListener('DOMContentLoaded', function() {
-  fetch('/api/productos')
+
+  showProducts();
+
+  function showProducts(){
+    fetch('/api/productos')
     .then(response => response.json())
     .then((data) => {
       console.log(data);
@@ -319,6 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let editar = document.createElement('a');
         let iconEditar = document.createElement('i');
         iconEditar.classList.add('fas', 'fa-edit', 'm-2');
+        editar.addEventListener('click', (e) => editModal(e, element));
         editar.appendChild(iconEditar);
 
         acciones.append(editar);
@@ -328,27 +320,55 @@ document.addEventListener('DOMContentLoaded', function() {
         tbody.append(tr);
       });
     });
-    
-  function deleteProduct(id) {
-    fetch(`/api/productos/${id}`, {
-      method: 'DELETE'
-    })
-    .then(response => {
-      if (response.ok) {
-        console.log(`Se ha borrado el producto con el ID ${id}`);
-      } else {
-        throw new Error(`No se ha podido borrar el producto con el ID ${id}`);
-      }
-    })
-    .catch(error => console.error(error));
+  }
+ 
+    const myModal = document.getElementById('exampleModal');
+    const myInput = document.getElementById('myInput');
+    const closeModal = document.getElementById('closeModal');
+    const saveChanges = document.getElementById('anadirProducto');
+    const title = document.querySelector('.modal-title');
+
+    myInput.addEventListener('click', () => {
+      myModal.style.display = 'block';
+      saveChanges.innerHTML = "Guardar producto";
+      title.innerHTML = "Guardar producto"
+      cleanForm();
+    });
+
+    closeModal.addEventListener('click', () => {
+      myModal.style.display = 'none';
+    });
+
+    function editModal(e, element) {
+      e.target.addEventListener('click', () => {
+        cleanForm();
+        myModal.style.display = 'block';
+        saveChanges.innerHTML = "Modificar producto";
+        title.innerHTML = "Modificar producto"
+        anadirDatosFormulario(element);
+      });
+    }
+
+  function anadirDatosFormulario(producto){
+
+    document.getElementById('product_id').value = producto.product_id;
+    document.getElementById('product_name').value = producto.product_name;
+    document.getElementById('supplier_id').value = producto.supplier_id;
+    document.getElementById('category_id').value = producto.category_id;
+    document.getElementById('quantity_per_unit').value = producto.quantity_per_unit;
+    document.getElementById('unit_price').value = producto.unit_price;
+    document.getElementById('units_in_stock').value = producto.units_in_stock;
+    document.getElementById('units_on_order').value = producto.units_on_order;
+    document.getElementById('reorder_level').value = producto.reorder_level;
+    document.getElementById('discontinued').value = producto.discontinued;
+
   }
 
-  document.getElementById('anadirProducto').addEventListener('click', () => mappNewProduct());
+  document.getElementById('anadirProducto').addEventListener('click', (e) => handleProductAction(e));
 
-  function mappNewProduct(){
-
+  function handleProductAction(e){
+   
     let product = {
-      //'product_id': document.getElementById('product_id').innerHTML,
       'product_name': document.getElementById('product_name').value,
       'supplier_id': document.getElementById('supplier_id').value,
       'category_id': document.getElementById('category_id').value,
@@ -360,7 +380,54 @@ document.addEventListener('DOMContentLoaded', function() {
       'discontinued': document.getElementById('discontinued').value
     }
 
-    addProduct(product);
+    if(e.target.innerHTML == "Añadir producto"){
+
+      addProduct(product);
+
+    } else if (saveChanges.innerHTML == "Modificar producto"){
+
+    product.product_id = document.getElementById('product_id').value;
+
+      editProduct(product);
+
+    }
+
+    myModal.style.display = 'none';
+  }
+
+  //TODO probar loading
+  function cleanForm(){
+    document.getElementById('product_id').value = "";
+    document.getElementById('product_name').value = "";
+    document.getElementById('supplier_id').value = "";
+    document.getElementById('category_id').value = "";
+    document.getElementById('quantity_per_unit').value = "";
+    document.getElementById('unit_price').value = "";
+    document.getElementById('units_in_stock').value = "";
+    document.getElementById('units_on_order').value = "";
+    document.getElementById('reorder_level').value = "";
+    document.getElementById('discontinued').value = "";
+  }
+
+  function editProduct(product) {
+
+    fetch(`/api/productos`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(product)
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log(`Se ha modificado el producto correctamente`);
+    } else {
+      throw new Error(`No se ha modificado el producto`);
+    }
+  })
+  .catch(error => console.error(error));
+    
   }
 
   function addProduct(product) {
@@ -383,6 +450,24 @@ document.addEventListener('DOMContentLoaded', function() {
   .catch(error => console.error(error));
 }
 
+function deleteProduct(id) {
+
+ let response =  confirm('¿Estás seguro que quieres eliminar el producto?')
+
+ if(response){
+  fetch(`/api/productos/${id}`, {
+      method: 'DELETE'
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log(`Se ha borrado el producto con el ID ${id}`);
+      } else {
+        throw new Error(`No se ha podido borrar el producto con el ID ${id}`);
+      }
+    })
+    .catch(error => console.error(error));
+  }
+ }
 });
 
 </script>

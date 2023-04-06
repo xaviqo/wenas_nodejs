@@ -1,0 +1,10 @@
+GET http://localhost:3000/api/categorias
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.6)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-01T104358.200.json
+
+###
+
