@@ -4,10 +4,13 @@ const fs = require('fs');
 const pool = new Pool(JSON.parse(fs.readFileSync(__dirname + '/public/db_credentials.json')));
 
 const db = {
-    //query
-    query: async (str, optArray) => {
+    query: async (str) => {
         pool.connect();
-        return await pool.query(str, optArray);
+        return await pool.query(str);
+    },
+    execute: async (str) => {
+        pool.connect()
+        await pool.execute(str);
     }
 };
 
