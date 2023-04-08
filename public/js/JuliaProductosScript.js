@@ -1,10 +1,32 @@
 document.addEventListener("DOMContentLoaded", async function () {
+  let limit = 10;
+  let offset = 0;
   let categoryNames = await getCategoriesName();
   let supplierNames = await getSupplierNames();
   let loader = document.getElementById("loader");
   let contenidoModal = document.getElementById("contenidoModal");
-  
-  document.getElementById("anadirProducto").addEventListener("click", (e) => handleProductAction(e));
+  document.getElementById('atras').addEventListener('click', () => {
+    if ((offset - 10) >= 0) {
+      offset = offset - limit;
+      showProducts();
+    }
+  });
+  document.getElementById('siguiente').addEventListener("click", () =>{
+    offset = offset + limit;
+    fetch(`/api/productos?limit=${limit}&offset=${offset}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length > 0) {
+          showProducts();
+        } else {
+          offset = offset - limit;
+        }
+      });
+  });
+
+  document
+    .getElementById("anadirProducto")
+    .addEventListener("click", (e) => handleProductAction(e));
 
   let myModal = document.getElementById("exampleModal");
   let myInput = document.getElementById("myInput");
@@ -36,7 +58,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   async function showProducts() {
-    await fetch("/api/productos").then((response) => response.json()).then((data) => {
+
+    await fetch(`/api/productos?limit=${limit}&offset=${offset}`)
+      .then((response) => response.json())
+      .then((data) => {
         document.getElementById("cuerpoTabla").innerHTML = "";
         data.forEach((element) => {
           let tbody = document.getElementById("cuerpoTabla");
@@ -124,7 +149,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   async function anadirDatosFormulario(productoTmp) {
-
     let producto = await getProductById(productoTmp.product_id);
 
     let suppliersSelect = document.getElementById("supplier_id");
@@ -157,12 +181,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     document.getElementById("product_id").value = producto.product_id;
     document.getElementById("product_name").value = producto.product_name;
-    document.getElementById("quantity_per_unit").value = producto.quantity_per_unit;
+    document.getElementById("quantity_per_unit").value =
+      producto.quantity_per_unit;
     document.getElementById("unit_price").value = producto.unit_price;
     document.getElementById("units_in_stock").value = producto.units_in_stock;
     document.getElementById("units_on_order").value = producto.units_on_order;
     document.getElementById("reorder_level").value = producto.reorder_level;
-    document.getElementById("discontinued").checked = producto.discontinued == "1" ? true : false;
+    document.getElementById("discontinued").checked =
+      producto.discontinued == "1" ? true : false;
   }
 
   function handleProductAction(e) {
@@ -170,8 +196,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     let product = {
       product_name: document.getElementById("product_name").value,
-      supplier_id: document.getElementById("supplier_id").selectedOptions[0].getAttribute("data-id"),
-      category_id: document.getElementById("category_id").selectedOptions[0].getAttribute("data-id"),
+      supplier_id: document
+        .getElementById("supplier_id")
+        .selectedOptions[0].getAttribute("data-id"),
+      category_id: document
+        .getElementById("category_id")
+        .selectedOptions[0].getAttribute("data-id"),
       quantity_per_unit: document.getElementById("quantity_per_unit").value,
       unit_price: document.getElementById("unit_price").value,
       units_in_stock: document.getElementById("units_in_stock").value,
@@ -285,26 +315,26 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   async function getProductById(id) {
-    loader.removeAttribute('hidden');
-    contenidoModal.setAttribute('hidden', true);
+    loader.removeAttribute("hidden");
+    contenidoModal.setAttribute("hidden", true);
     try {
       let response = await fetch(`/api/productos/${id}`, {
-        method: 'GET',
+        method: "GET",
       });
       if (!response.ok) throw new Error("Error al obtener el producto");
 
       let product = await response.json();
 
       //setTimeout(() => {
-        loader.setAttribute('hidden', '');
-        contenidoModal.removeAttribute('hidden');
-      //}, 1000); 
+      loader.setAttribute("hidden", "");
+      contenidoModal.removeAttribute("hidden");
+      //}, 1000);
 
       return product;
     } catch (error) {
       console.error(error);
-      loader.setAttribute('hidden', '');
-      contenidoModal.removeAttribute('hidden');
+      loader.setAttribute("hidden", "");
+      contenidoModal.removeAttribute("hidden");
     }
   }
 });

@@ -3,7 +3,12 @@ const router = express.Router();
 const db = require('../db');
 
 router.get('/', async(req, res) => {
-    let result = await db.query('select * from products ORDER BY product_id');
+    let limit = req.query.limit || 10;
+    let offset = req.query.offset || 0;
+
+    let result = await db.query('select * from products ORDER BY product_id LIMIT $1 OFFSET $2', 
+    [limit, offset]);
+    
     res.json(result.rows);
 });
 
