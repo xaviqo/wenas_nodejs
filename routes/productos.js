@@ -20,7 +20,6 @@ router.get('/suppliers', async(req, res) => {
 router.get('/:id', async(req, res) => {
   try {
     let productId = req.params.id;
-    console.log(productId);
     const result = await db.query('select * from products where product_id = $1', [productId]);
     let product = result.rows[0];
     res.json(product);
@@ -35,7 +34,6 @@ router.delete('/:id', async(req, res) => {
     try {
 
       let productId = req.params.id;
-      console.log(productId);
     //  await db.query('DELETE FROM order_details where product_id = ' + req.params.id);
 
       await db.query('DELETE FROM products where product_id = $1', 

@@ -4,9 +4,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   let loader = document.getElementById("loader");
   let contenidoModal = document.getElementById("contenidoModal");
   
-  document
-    .getElementById("anadirProducto")
-    .addEventListener("click", (e) => handleProductAction(e));
+  document.getElementById("anadirProducto").addEventListener("click", (e) => handleProductAction(e));
 
   let myModal = document.getElementById("exampleModal");
   let myInput = document.getElementById("myInput");
@@ -14,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   let saveChanges = document.getElementById("anadirProducto");
   let title = document.querySelector(".modal-title");
 
-  showProducts();
+  await showProducts();
 
   myInput.addEventListener("click", () => {
     cleanForm();
@@ -28,20 +26,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     myModal.style.display = "none";
   });
 
-  function editModal(e, element) {
-    e.target.addEventListener("click", async () => {
-      cleanForm();
-      myModal.style.display = "block";
-      saveChanges.innerHTML = "Modificar producto";
-      title.innerHTML = "Modificar producto";
-      addOptionsModal();
-      await anadirDatosFormulario(element);
-    });
+  async function editModal(element) {
+    cleanForm();
+    myModal.style.display = "block";
+    saveChanges.innerHTML = "Modificar producto";
+    title.innerHTML = "Modificar producto";
+    addOptionsModal();
+    await anadirDatosFormulario(element);
   }
 
-  function showProducts() {
-    fetch("/api/productos").then((response) => response.json()).then((data) => {
-        console.log(data);
+  async function showProducts() {
+    await fetch("/api/productos").then((response) => response.json()).then((data) => {
+        document.getElementById("cuerpoTabla").innerHTML = "";
         data.forEach((element) => {
           let tbody = document.getElementById("cuerpoTabla");
           let tr = document.createElement("tr");
@@ -94,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           let editar = document.createElement("a");
           let iconEditar = document.createElement("i");
           iconEditar.classList.add("fas", "fa-edit", "m-2");
-          editar.addEventListener("click", (e) => editModal(e, element));
+          editar.addEventListener("click", (e) => editModal(element));
           editar.appendChild(iconEditar);
 
           acciones.append(editar);
@@ -161,22 +157,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     document.getElementById("product_id").value = producto.product_id;
     document.getElementById("product_name").value = producto.product_name;
-    document.getElementById("quantity_per_unit").value =
-      producto.quantity_per_unit;
+    document.getElementById("quantity_per_unit").value = producto.quantity_per_unit;
     document.getElementById("unit_price").value = producto.unit_price;
     document.getElementById("units_in_stock").value = producto.units_in_stock;
     document.getElementById("units_on_order").value = producto.units_on_order;
     document.getElementById("reorder_level").value = producto.reorder_level;
-    document.getElementById("discontinued").checked =
-      producto.discontinued == "1" ? true : false;
-
-    /*
-    for (var propiedad in producto) {
-  if (producto.hasOwnProperty(propiedad)) {
-    document.getElementById(propiedad).value = producto[propiedad];
-  }
-}
-    */
+    document.getElementById("discontinued").checked = producto.discontinued == "1" ? true : false;
   }
 
   function handleProductAction(e) {
@@ -184,12 +170,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     let product = {
       product_name: document.getElementById("product_name").value,
-      supplier_id: document
-        .getElementById("supplier_id")
-        .selectedOptions[0].getAttribute("data-id"),
-      category_id: document
-        .getElementById("category_id")
-        .selectedOptions[0].getAttribute("data-id"),
+      supplier_id: document.getElementById("supplier_id").selectedOptions[0].getAttribute("data-id"),
+      category_id: document.getElementById("category_id").selectedOptions[0].getAttribute("data-id"),
       quantity_per_unit: document.getElementById("quantity_per_unit").value,
       unit_price: document.getElementById("unit_price").value,
       units_in_stock: document.getElementById("units_in_stock").value,
@@ -199,10 +181,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     };
 
     if (saveChangesButton.innerHTML == "Modificar producto") {
-      addProduct(product);
-    } else {
       product.product_id = document.getElementById("product_id").value;
       editProduct(product);
+    } else {
+      addProduct(product);
     }
 
     myModal.style.display = "none";
@@ -217,7 +199,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         supplier_id: element.supplier_id,
         company_name: element.company_name,
       }));
-      console.log(`Nombre de los proveedores recibidos correctamente`);
       return suppliers;
     } catch (error) {
       console.error(error);
@@ -235,7 +216,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         category_id: element.category_id,
         category_name: element.category_name,
       }));
-      console.log(`Nombre de las categorias recibidas correctamente`);
       return categories;
     } catch (error) {
       console.error(error);
@@ -243,7 +223,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  //TODO probar loading
   function cleanForm() {
     document.getElementById("product_id").value = "";
     document.getElementById("product_name").value = "";
@@ -266,9 +245,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       },
       body: JSON.stringify(product),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
-          console.log(`Se ha modificado el producto correctamente`);
+          await showProducts();
         } else {
           throw new Error(`No se ha modificado el producto`);
         }
@@ -285,9 +264,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       },
       body: JSON.stringify(product),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
-          console.log(`Se ha añadido el producto correctamente`);
+          await showProducts();
         } else {
           throw new Error(`No se ha añadido el producto`);
         }
@@ -300,6 +279,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (!response) return;
     fetch(`/api/productos/${id}`, {
       method: "DELETE",
+    }).then(() => {
+      showProducts();
     });
   }
 
@@ -314,10 +295,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       let product = await response.json();
 
-      setTimeout(() => {
+      //setTimeout(() => {
         loader.setAttribute('hidden', '');
         contenidoModal.removeAttribute('hidden');
-      }, 1000); 
+      //}, 1000); 
 
       return product;
     } catch (error) {
