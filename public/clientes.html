@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="styles/style.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -118,29 +119,45 @@
     </section>
 <!-- Button trigger modal -->
 <div class="d-flex m-3">
-  <button type="button" class="btn btn-primary mx-auto" id="myInput" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <button type="button" class="btn btn-primary mx-auto" id="showAddCliente" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Añadir
   </button>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
+<!-- Modal para añadir cliente -->
+<div id="addClienteModal">
+  <div class="modalContent">
+    <span class="closeModalAdd">&times;</span>
+    <h2>Añadir cliente</h2>
+    <form id="addClienteForm">
+      <label for="customer_id">ID del cliente:</label>
+      <input type="text" id="customer_id" name="customer_id" required>
+      <label for="company_name">Nombre de la empresa:</label>
+      <input type="text" id="company_name" name="company_name" required>
+      <label for="contact_name">Nombre del contacto:</label>
+      <input type="text" id="contact_name" name="contact_name" required>
+      <label for="contact_title">Cargo del contacto:</label>
+      <input type="text" id="contact_title" name="contact_title" required>
+      <label for="address">Dirección:</label>
+      <input type="text" id="address" name="address" required>
+      <label for="city">Ciudad:</label>
+      <input type="text" id="city" name="city" required>
+      <label for="region">Región:</label>
+      <input type="text" id="region" name="region">
+      <label for="postal_code">Código postal:</label>
+      <input type="text" id="postal_code" name="postal_code" required>
+      <label for="country">País:</label>
+      <input type="text" id="country" name="country" required>
+      <label for="phone">Teléfono:</label>
+      <input type="tel" id="phone" name="phone" required>
+      <label for="fax">Fax:</label>
+      <input type="tel" id="fax" name="fax">
+      <button type="submit" id="addCliente">Añadir</button>
+    </form>
   </div>
 </div>
+
         <div class="row p-5">
           <div class="col-12">
             <div class="card">
@@ -205,14 +222,6 @@
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 
-<script>
-var myModal = document.getElementById('exampleModal')
-var myInput = document.getElementById('myInput')
-
-myModal.addEventListener('shown.bs.modal', function () {
-  myInput.focus()
-})
-</script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     fetch('/api/clientes').then(response => response.json()).then((data) => {
