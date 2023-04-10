@@ -46,14 +46,8 @@ function getClientes(){
 }
 
 document.getElementById('showAddCliente').addEventListener('click', (event) => upCliente(event));
-function deleteCliente(id){
-  console.log(id)
-}
 
-function upadateCliente(id){
-  console.log(id)
-}
-
+//mostrar añadir cliente
 function upCliente(e){
   e.preventDefault();
   document.getElementById("addClienteModal").style.display = "block";
@@ -86,14 +80,14 @@ function añadirCliente(){
     },
     body: JSON.stringify(newCustomer),
   })
-    .then(async (response) => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Cliente añadido:", data);
+  .then(async (response) => {
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    console.log("Cliente añadido:", data);
       // Actualizar la tabla de clientes
       getClientes();
       // Cerrar el modal
@@ -103,4 +97,17 @@ function añadirCliente(){
       console.log("Error al añadir cliente:", error);
       alert("Error al añadir cliente");
     });
- };
+  };
+  
+  //borrar cliente
+  function deleteCliente(id){
+    fetch(`/api/clientes/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      getClientes();
+    });
+  }
+  
+  function upadateCliente(id){
+    console.log(id)
+  }
