@@ -52,7 +52,7 @@ function upCliente(e){
   e.preventDefault();
   document.getElementById("addClienteModal").style.display = "block";
   document.querySelector(".closeModal").addEventListener('click', () => {document.getElementById("addClienteModal").style.display = "none"});
-  document.getElementById("addCliente").addEventListener('click', () => añadirCliente())
+  document.getElementById("addCliente").onclick = añadirCliente
 }
 
 //añadir Cliente
@@ -109,5 +109,51 @@ function añadirCliente(){
   }
   
   function upadateCliente(id){
-    console.log(id)
+    document.getElementById("addClienteModal").style.display = "block";
+    document.getElementById("customer_id").value = id;
+    document.querySelector(".closeModal").addEventListener('click', () => {document.getElementById("addClienteModal").style.display = "none"});
+    document.getElementById("addCliente").onclick = actualizarCliente;
+  }
+
+  function actualizarCliente(){
+      // Crear un objeto con los valores del formulario
+  const updateCustomer = {
+    customer_id: document.getElementById("customer_id").value,
+    company_name: document.getElementById("company_name").value,
+    contact_name: document.getElementById("contact_name").value,
+    contact_title: document.getElementById("contact_title").value,
+    address: document.getElementById("address").value,
+    city: document.getElementById("city").value,
+    region: document.getElementById("region").value,
+    postal_code: document.getElementById("postal_code").value,
+    country: document.getElementById("country").value,
+    phone: document.getElementById("phone").value,
+    fax: document.getElementById("fax").value
+  };
+  //Enviar los datos al servidor
+  fetch(`/api/clientes/${updateCustomer.customer_id}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updateCustomer),
+  })
+  .then(async (response) => {
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    console.log("Cliente actualizado:", data);
+      // Actualizar la tabla de clientes
+      getClientes();
+      // Cerrar el modal
+      document.getElementById("addClienteModal").style.display = "none"
+    })
+    .catch((error) => {
+      console.log("Error al añadir cliente:", error);
+      alert("Error al añadir cliente");
+    });
   }
