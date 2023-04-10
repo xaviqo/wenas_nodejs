@@ -92,7 +92,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                 (sup) => sup.supplier_id === element.supplier_id
               );
               td.innerHTML = supplier ? supplier.company_name : "";
-            } else {
+            } else if (el === 'discontinued') 
+            {
+              td.innerHTML = element[el] == 1 ? 'Si' : 'No';
+            } 
+            else 
+            {
               td.innerHTML = element[el];
             }
             tr.appendChild(td);
@@ -181,14 +186,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     document.getElementById("product_id").value = producto.product_id;
     document.getElementById("product_name").value = producto.product_name;
-    document.getElementById("quantity_per_unit").value =
-      producto.quantity_per_unit;
+    document.getElementById("quantity_per_unit").value = producto.quantity_per_unit;
     document.getElementById("unit_price").value = producto.unit_price;
     document.getElementById("units_in_stock").value = producto.units_in_stock;
     document.getElementById("units_on_order").value = producto.units_on_order;
     document.getElementById("reorder_level").value = producto.reorder_level;
-    document.getElementById("discontinued").checked =
-      producto.discontinued == "1" ? true : false;
+    document.getElementById("discontinued").checked = producto.discontinued == "1" ? true : false;
   }
 
   function handleProductAction(e) {
