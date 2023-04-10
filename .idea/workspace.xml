@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="86587251-109b-49fd-8e54-f561705d9f3e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/public/dist/css/category.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/categorias.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/categorias.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/categorias.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/categorias.js" afterDir="false" />
     </list>
@@ -44,7 +43,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/xavi/Desktop/wenas_nodejs/wenas_nodejs/public&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/xavi/Desktop/KONSERVI_LARAVEL/frontend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -85,7 +84,9 @@
       <workItem from="1680016366915" duration="3867000" />
       <workItem from="1680337243242" duration="70000" />
       <workItem from="1680337570851" duration="201000" />
-      <workItem from="1680337851920" duration="7900000" />
+      <workItem from="1680337851920" duration="8749000" />
+      <workItem from="1680540241423" duration="67000" />
+      <workItem from="1681119110372" duration="3347000" />
     </task>
     <servers />
   </component>
@@ -98,8 +99,13 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/routes/categorias.js</url>
           <line>6</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/routes/categorias.js</url>
+          <line>22</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

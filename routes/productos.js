@@ -3,21 +3,42 @@ const router = express.Router();
 const db = require('../db');
 
 router.get('/', async(req, res) => {
-    let result = await db.query('select * from products');
+    let limit = req.query.limit || 10;
+    let offset = req.query.offset || 0;
+
+    let result = await db.query('select * from products ORDER BY product_id LIMIT $1 OFFSET $2', 
+    [limit, offset]);
+    
     res.json(result.rows);
 });
 
-router.get('/', async(req, res) => {
-  let result = await db.query('select * from products');
+router.get('/categories', async(req, res) => {
+  let result = await db.query('select category_id, category_name from categories');
   res.json(result.rows);
 });
+
+router.get('/suppliers', async(req, res) => {
+  let result = await db.query('select supplier_id, company_name from suppliers');
+  res.json(result.rows);
+});
+
+router.get('/:id', async(req, res) => {
+  try {
+    let productId = req.params.id;
+    const result = await db.query('select * from products where product_id = $1', [productId]);
+    let product = result.rows[0];
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 
 router.delete('/:id', async(req, res) => {
 
     try {
 
       let productId = req.params.id;
-      console.log(productId);
     //  await db.query('DELETE FROM order_details where product_id = ' + req.params.id);
 
       await db.query('DELETE FROM products where product_id = $1', 

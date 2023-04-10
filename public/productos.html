@@ -84,7 +84,7 @@
             <a href="categorias.html" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Categorias
+                Categorías
               </p>
             </a>
           </li>
@@ -138,17 +138,21 @@
     </div>
 
       <div class="modal-body ">
+        <div class="loader mx-auto" id="loader" hidden></div>
+        <div id="contenidoModal">
         <label for="product_id" class="col-form-label">Id:</label>
         <input type="text" class="form-control" id="product_id" readonly>
 
         <label for="product_name" class="col-form-label">Nombre del producto:</label>
         <input type="text" class="form-control" id="product_name">
 
-        <label for="supplier_id" class="col-form-label">Id proveedor:</label>
-        <input type="number" class="form-control" id="supplier_id">
+        <label for="supplier_id" class="col-form-label">Proveedor:</label><br>
+        <select id="supplier_id"></select>
+        <br>
 
-        <label for="category_id" class="col-form-label">Id categoria:</label>
-        <input type="number" class="form-control" id="category_id">
+        <label for="category_id" class="col-form-label">Categoría:</label><br>
+        <select id="category_id"></select>
+        <br>
 
         <label for="quantity_per_unit" class="col-form-label">Cantidad por unidad:</label>
         <input type="text" class="form-control" id="quantity_per_unit">
@@ -165,9 +169,10 @@
         <label for="reorder_level" class="col-form-label">Nivel de pedidos:</label>
         <input type="number" class="form-control" id="reorder_level">
 
-        <label for="discontinued" class="col-form-label">Descatalogados: </label>
-        <input type="number" class="form-control" id="discontinued">
-
+        <label for="discontinued" class="col-form-label">Descatalogado: </label><br>
+        <span>Sí</span>
+        <input type="checkbox" id="discontinued">
+      </div>
       </div>
       <div class="modal-footer">
         <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -184,12 +189,9 @@
 
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
+              
                     <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
+                     
                     </div>
                   </div>
                 </div>
@@ -199,16 +201,16 @@
                 <table class="table table-head-fixed text-nowrap table-hover">
                   <thead>
                     <tr>
-                      <th>Category id</th>
-                      <th>Discontinued</th>
-                      <th>Product id</th>
-                      <th>Product name</th>
-                      <th>Quantity per unit</th>
-                      <th>Reorder level</th>
-                      <th>Suplier id</th>
-                      <th>Unit price</th>
-                      <th>Units in stock</th>
-                      <th>Units on order</th>
+                      <th>Id</th>
+                      <th>Categoría</th>
+                      <th>Descatalogado</th>
+                      <th>Nombre del producto</th>
+                      <th>Cantidad <br> por unidad</th>
+                      <th>Nivel de <br> pedidos</th>
+                      <th>Proveedor</th>
+                      <th>Precio por <br> unidad</th>
+                      <th>Unidades <br> en stock</th>
+                      <th>Unidades <br> pedidas</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
@@ -217,8 +219,17 @@
                 </table>
               </div>
               <!-- /.card-body -->
+              
             </div>
             <!-- /.card -->
+            <div class="botones d-flex">
+              <button class="download-button mx-auto" id="atras">
+                <div class="docs">Atrás</div>
+              </button>
+              <button class="download-button mx-auto" id="siguiente">
+                <div class="docs">Siguiente</div>
+              </button>
+            </div>
           </div>
         </div>
         <!-- /.row -->
@@ -244,233 +255,6 @@
 </div>
 <!-- ./wrapper -->
 
-<script defer>
-
-document.addEventListener('DOMContentLoaded', function() {
-
-  showProducts();
-
-  function showProducts(){
-    fetch('/api/productos')
-    .then(response => response.json())
-    .then((data) => {
-      console.log(data);
-      data.forEach(element => {
-        
-        let tbody = document.getElementById('cuerpoTabla');
-        let tr = document.createElement('tr');
-
-        let categoryId = document.createElement('td');
-        categoryId.innerHTML = element.category_id;
-        tr.appendChild(categoryId);
-
-        let discounted = document.createElement('td');
-        discounted.innerHTML = element.discontinued;
-        tr.append(discounted);
-        
-        let productId = document.createElement('td');
-        productId.innerHTML = element.product_id;
-        tr.append(productId);
-
-        let productName = document.createElement('td');
-        productName.innerHTML = element.product_name;
-        tr.append(productName);
-
-        let quantityPerUnit = document.createElement('td');
-        quantityPerUnit.innerHTML = element.quantity_per_unit;
-        tr.append(quantityPerUnit);
-
-        let reorderLevel = document.createElement('td');
-        reorderLevel.innerHTML = element.reorder_level;
-        tr.append(reorderLevel);
-
-        let supplierId = document.createElement('td');
-        supplierId.innerHTML = element.supplier_id;
-        tr.append(supplierId);
-
-        let unitPrice = document.createElement('td');
-        unitPrice.innerHTML = element.unit_price;
-        tr.append(unitPrice);
-        
-        let unitsInStock = document.createElement('td');
-        unitsInStock.innerHTML = element.units_in_stock;
-        tr.append(unitsInStock);
-
-        let unitsOnOrder = document.createElement('td');
-        unitsOnOrder.innerHTML = element.units_on_order;
-        tr.append(unitsOnOrder);
-
-        let acciones = document.createElement('td');
-        let eliminar = document.createElement('a');
-        let iconEliminar = document.createElement('i');
-        iconEliminar.classList.add('fas', 'fa-trash-alt', 'm-2');
-        eliminar.addEventListener('click', () => deleteProduct(element.product_id));
-        eliminar.appendChild(iconEliminar);
-        
-        let editar = document.createElement('a');
-        let iconEditar = document.createElement('i');
-        iconEditar.classList.add('fas', 'fa-edit', 'm-2');
-        editar.addEventListener('click', (e) => editModal(e, element));
-        editar.appendChild(iconEditar);
-
-        acciones.append(editar);
-        acciones.append(eliminar);
-        tr.append(acciones);
-
-        tbody.append(tr);
-      });
-    });
-  }
- 
-    const myModal = document.getElementById('exampleModal');
-    const myInput = document.getElementById('myInput');
-    const closeModal = document.getElementById('closeModal');
-    const saveChanges = document.getElementById('anadirProducto');
-    const title = document.querySelector('.modal-title');
-
-    myInput.addEventListener('click', () => {
-      myModal.style.display = 'block';
-      saveChanges.innerHTML = "Guardar producto";
-      title.innerHTML = "Guardar producto"
-      cleanForm();
-    });
-
-    closeModal.addEventListener('click', () => {
-      myModal.style.display = 'none';
-    });
-
-    function editModal(e, element) {
-      e.target.addEventListener('click', () => {
-        cleanForm();
-        myModal.style.display = 'block';
-        saveChanges.innerHTML = "Modificar producto";
-        title.innerHTML = "Modificar producto"
-        anadirDatosFormulario(element);
-      });
-    }
-
-  function anadirDatosFormulario(producto){
-
-    document.getElementById('product_id').value = producto.product_id;
-    document.getElementById('product_name').value = producto.product_name;
-    document.getElementById('supplier_id').value = producto.supplier_id;
-    document.getElementById('category_id').value = producto.category_id;
-    document.getElementById('quantity_per_unit').value = producto.quantity_per_unit;
-    document.getElementById('unit_price').value = producto.unit_price;
-    document.getElementById('units_in_stock').value = producto.units_in_stock;
-    document.getElementById('units_on_order').value = producto.units_on_order;
-    document.getElementById('reorder_level').value = producto.reorder_level;
-    document.getElementById('discontinued').value = producto.discontinued;
-
-  }
-
-  document.getElementById('anadirProducto').addEventListener('click', (e) => handleProductAction(e));
-
-  function handleProductAction(e){
-   
-    let product = {
-      'product_name': document.getElementById('product_name').value,
-      'supplier_id': document.getElementById('supplier_id').value,
-      'category_id': document.getElementById('category_id').value,
-      'quantity_per_unit': document.getElementById('quantity_per_unit').value,
-      'unit_price' :document.getElementById('unit_price').value,
-      'units_in_stock': document.getElementById('units_in_stock').value,
-      'units_on_order': document.getElementById('units_on_order').value,
-      'reorder_level': document.getElementById('reorder_level').value,
-      'discontinued': document.getElementById('discontinued').value
-    }
-
-    if(e.target.innerHTML == "Añadir producto"){
-
-      addProduct(product);
-
-    } else if (saveChanges.innerHTML == "Modificar producto"){
-
-    product.product_id = document.getElementById('product_id').value;
-
-      editProduct(product);
-
-    }
-
-    myModal.style.display = 'none';
-  }
-
-  //TODO probar loading
-  function cleanForm(){
-    document.getElementById('product_id').value = "";
-    document.getElementById('product_name').value = "";
-    document.getElementById('supplier_id').value = "";
-    document.getElementById('category_id').value = "";
-    document.getElementById('quantity_per_unit').value = "";
-    document.getElementById('unit_price').value = "";
-    document.getElementById('units_in_stock').value = "";
-    document.getElementById('units_on_order').value = "";
-    document.getElementById('reorder_level').value = "";
-    document.getElementById('discontinued').value = "";
-  }
-
-  function editProduct(product) {
-
-    fetch(`/api/productos`, {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(product)
-  })
-  .then(response => {
-    if (response.ok) {
-      console.log(`Se ha modificado el producto correctamente`);
-    } else {
-      throw new Error(`No se ha modificado el producto`);
-    }
-  })
-  .catch(error => console.error(error));
-    
-  }
-
-  function addProduct(product) {
-
-  fetch(`/api/productos`, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(product)
-  })
-  .then(response => {
-    if (response.ok) {
-      console.log(`Se ha añadido el producto correctamente`);
-    } else {
-      throw new Error(`No se ha añadido el producto`);
-    }
-  })
-  .catch(error => console.error(error));
-}
-
-function deleteProduct(id) {
-
- let response =  confirm('¿Estás seguro que quieres eliminar el producto?')
-
- if(response){
-  fetch(`/api/productos/${id}`, {
-      method: 'DELETE'
-    })
-    .then(response => {
-      if (response.ok) {
-        console.log(`Se ha borrado el producto con el ID ${id}`);
-      } else {
-        throw new Error(`No se ha podido borrar el producto con el ID ${id}`);
-      }
-    })
-    .catch(error => console.error(error));
-  }
- }
-});
-
-</script>
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
@@ -481,7 +265,7 @@ function deleteProduct(id) {
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 
-
+<script src="js/JuliaProductosScript.js"></script>
 </body>
 
 </html>
