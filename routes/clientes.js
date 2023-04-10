@@ -23,10 +23,11 @@ router.post('/', async (req, res) => {
 // Actualizar un cliente existente
 router.put('/:id', async (req, res) => {
   const customerId = req.params.id;
-  const { company_name, contact_name, contact_title, address, city, region, postal_code, country, phone, fax } = req.body;
+  let cliente = req.body;
     const result = await db.query(
       'UPDATE customers SET company_name=$1, contact_name=$2, contact_title=$3, address=$4, city=$5, region=$6, postal_code=$7, country=$8, phone=$9, fax=$10 WHERE customer_id=$11 RETURNING *',
-      [company_name, contact_name, contact_title, address, city, region, postal_code, country, phone, fax, customerId]
+      [cliente.company_name, cliente.contact_name, cliente.contact_title, cliente.address, cliente.city, cliente.region, 
+        cliente.postal_code, cliente.country, cliente.phone, cliente.fax, customerId]
     );
     if (result.rowCount === 1) {
       res.json(result.rows[0]);
