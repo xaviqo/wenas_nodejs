@@ -10,12 +10,14 @@ router.get('/', async(req, res) => {
 
 // Crear un nuevo cliente
 router.post('/', async (req, res) => {
-  const { customer_id, company_name, contact_name, contact_title, address, city, region, postal_code, country, phone, fax } = req.body;
-    const result = await db.query(
-      'INSERT INTO customers (customer_id, company_name, contact_name, contact_title, address, city, region, postal_code, country, phone, fax) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
-      [customer_id, company_name, contact_name, contact_title, address, city, region, postal_code, country, phone, fax]
-    );
-    res.status(201).json(result.rows[0]);
+  console.log('entra')
+  let cliente  = req.body;
+    await db.query('INSERT INTO customers VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+    [
+      cliente.customer_id, cliente.company_name, cliente.contact_name, cliente.contact_title, cliente.address, 
+      cliente.city, cliente.region, cliente.postal_code, cliente.country, cliente.phone, cliente.fax,
+    ]);    
+    res.status(200).json({ message: `Cliente añadido correctamente.` });
 });
 
 // Actualizar un cliente existente

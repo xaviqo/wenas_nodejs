@@ -120,7 +120,7 @@
 <!-- Button trigger modal -->
 <div class="d-flex m-3">
   <button type="button" class="btn btn-primary mx-auto" id="showAddCliente" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Añadir
+    Añadir Cliente
   </button>
 </div>
 
@@ -128,9 +128,9 @@
 <!-- Modal para añadir cliente -->
 <div id="addClienteModal">
   <div class="modalContent">
-    <span class="closeModalAdd">&times;</span>
+    <span class="closeModal">&times;</span>
     <h2>Añadir cliente</h2>
-    <form id="addClienteForm">
+    <div id="addClienteForm">
       <label for="customer_id">ID del cliente:</label>
       <input type="text" id="customer_id" name="customer_id" required>
       <label for="company_name">Nombre de la empresa:</label>
@@ -153,8 +153,8 @@
       <input type="tel" id="phone" name="phone" required>
       <label for="fax">Fax:</label>
       <input type="tel" id="fax" name="fax">
-      <button type="submit" id="addCliente">Añadir</button>
-    </form>
+      <button id="addCliente">Añadir</button>
+    </div>
   </div>
 </div>
 
@@ -221,62 +221,8 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script src="js/clientes.js" defer></script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    fetch('/api/clientes').then(response => response.json()).then((data) => {
-      let cabeceras = Object.keys(data[0]);
-      let row = document.createElement('tr');
-      let thead = document.getElementById('cabeceraTabla');
-      let tbody = document.getElementById('cuerpoTabla');
-      for (let c of cabeceras) {
-        let cell = document.createElement('th');
-        cell.innerHTML = c;
-        row.appendChild(cell);
-      }
-      data.forEach(element => {
-        let r = document.createElement('tr');
-        let valores = Object.values(element)
-        for (let valor of valores) {
-          let campo = document.createElement('td');
-          campo.innerHTML = valor;
-          r.appendChild(campo);
-        }
-        let borrar = document.createElement('td');
-        let eliminar = document.createElement('a');
-        let iconEliminar = document.createElement('i');
-        iconEliminar.classList.add('fas', 'fa-trash-alt', 'm-2');
-        eliminar.addEventListener('click', () => deleteCliente(element.customer_id));
-        eliminar.appendChild(iconEliminar);
-
-        let editar = document.createElement('a');
-        let iconEditar = document.createElement('i');
-        iconEditar.classList.add('fas', 'fa-edit', 'm-2');
-        editar.addEventListener('click', () => upadateCliente(element.customer_id))
-        editar.appendChild(iconEditar);
-
-        borrar.append(editar);
-        borrar.append(eliminar);
-        r.append(borrar);
-        tbody.appendChild(r)
-      });
-      thead.appendChild(row);
-    });
-  });
-
-  function deleteCliente(id){
-    console.log(id)
-  }
-
-  function upadateCliente(id){
-    console.log(id)
-  }
-
-  function upCliente(){
-    console.log('up')
-  }
-
-</script>
 </body>
 
 </html>
