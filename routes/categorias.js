@@ -7,8 +7,24 @@ router.post('/', async (req,res) => {
         const { name, desc } = req.body;
         const lastRow = await db.query('SELECT c.category_id FROM categories c ORDER BY c.category_id DESC LIMIT 1');
         const categoryId = (lastRow.rows[0]['category_id']+1);
-        await db.query(`INSERT INTO categories(category_id,category_name,description) VALUES(${categoryId},'${name}','${desc}')`);
+        await db.query(`INSERT INTO categories VALUES($1,$2,$3)`, [categoryId,name,desc]);
         res.status(200).json({'message':'categoria añadida correctamente'});
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({
+            'message': 'Error añadiendo categoría',
+            'exception':e
+        })
+    }
+});
+
+router.put('/', async (req,res) => {
+    try {
+        const { name, desc, id } = req.body;
+        await db.query(`UPDATE categories SET category_name = $1, description = $2 WHERE category_id = $3`,
+            [name, desc, id]
+        );
+        res.status(200).json({'message':`categoria (${id}) ${name} editada correctamente`});
     } catch (e) {
         console.error(e)
         res.status(500).json({
@@ -33,7 +49,7 @@ router.get('/:id', async(req, res) => {
 
 router.get('/', async(req, res) => {
     try {
-        const categories = await db.query('SELECT * FROM categories');
+        const categories = await db.query('SELECT * FROM categories ORDER BY category_id');
         res.status(200).json(categories['rows']);
     } catch (e) {
         console.error(e)

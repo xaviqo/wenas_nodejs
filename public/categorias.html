@@ -270,7 +270,9 @@
     await fetch(`/api/categorias/${id}`,{method:'GET'})
             .then(res => res.json())
             .then((data) => {
+              console.log(data)
               addCategory.addValues({
+                id : data.category_id,
                 name: data.category_name,
                 desc: data.description
               });
@@ -324,6 +326,13 @@
       descriptionInput.setAttribute("required", "");
       modalContent.appendChild(descriptionInput);
 
+      const idInput = document.createElement("input");
+      idInput.setAttribute("type","hidden");
+      idInput.setAttribute("id","categoryId");
+      idInput.setAttribute("name","categoryId");
+      idInput.setAttribute("readonly","");
+      modalContent.appendChild(idInput);
+
       const resetBtn = document.createElement("button");
       resetBtn.setAttribute("type", "button");
       resetBtn.setAttribute("id", "reset-form");
@@ -350,7 +359,12 @@
       });
 
       submitBtn.addEventListener("click", function() {
-        send({ name: nameInput.value, desc: descriptionInput.value });
+        send({
+          name: nameInput.value,
+          desc: descriptionInput.value,
+          id: idInput.value
+        });
+        modal.style.display = "none";
       });
 
       resetBtn.addEventListener("click", function() {
@@ -361,19 +375,36 @@
     }
 
     function send(category) {
-      fetch('/api/categorias', {
-        method: 'POST',
-        body: JSON.stringify(category)
-      })
-      .then(response => response.json())
-      .then(data => alert(data.message))
-      .then(() => loadCategories())
-      .then(() => modal.style.display = "none")
-      .catch(error => console.error(error));
+
+      if (category.id){
+
+        fetch('/api/categorias', {
+          method: 'PUT',
+          body: JSON.stringify(category)
+        })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .then(() => loadCategories())
+                .then(() => modal.style.display = "none")
+                .catch(error => console.error(error));
+      } else {
+
+        fetch('/api/categorias', {
+          method: 'POST',
+          body: JSON.stringify(category)
+        })
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .then(() => loadCategories())
+                .then(() => modal.style.display = "none")
+                .catch(error => console.error(error));
+
+      }
+
     }
 
     function addValues(values){
-      console.log(values)
+      document.getElementById('categoryId').value = values.id;
       document.getElementById('name').value = values.name;
       document.getElementById('description').value = values.desc;
     }
