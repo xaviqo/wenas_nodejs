@@ -1,3 +1,48 @@
+/* Modal  cliente*/
+#addClienteModal {
+  display: none;
+  position: fixed; 
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modalContent {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+  max-width: 500px;
+}
+
+.closeModal {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closeModal:hover,
+.closeModal:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Formulario */
+#addClienteForm {
+  display: grid;
+  gap: 10px;
+}
+
+
+
+
 .imageMain{
     background-image: url('https://images.unsplash.com/photo-1534723452862-4c874018d66d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
     background-size: cover;

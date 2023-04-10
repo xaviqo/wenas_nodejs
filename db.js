@@ -6,8 +6,10 @@ const pool = new Pool(JSON.parse(fs.readFileSync(__dirname + '/public/db_credent
 const db = {
     //query
     query: async (str, optArray) => {
-        pool.connect();
-        return await pool.query(str, optArray);
+        const conexion = await pool.connect();
+        const result = await pool.query(str, optArray);
+        conexion.release();;
+        return result;
     }
 };
 

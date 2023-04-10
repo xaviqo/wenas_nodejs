@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="styles/style.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -118,34 +119,50 @@
     </section>
 <!-- Button trigger modal -->
 <div class="d-flex m-3">
-  <button type="button" class="btn btn-primary mx-auto" id="myInput" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Añadir
+  <button type="button" class="btn btn-primary mx-auto" id="showAddCliente" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Añadir Cliente
   </button>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+<!-- Modal para añadir cliente -->
+<div id="addClienteModal">
+  <div class="modalContent">
+    <span class="closeModal">&times;</span>
+    <h2>Añadir cliente</h2>
+    <div id="addClienteForm">
+      <label for="customer_id">ID del cliente:</label>
+      <input type="text" id="customer_id" name="customer_id" required>
+      <label for="company_name">Nombre de la empresa:</label>
+      <input type="text" id="company_name" name="company_name" required>
+      <label for="contact_name">Nombre del contacto:</label>
+      <input type="text" id="contact_name" name="contact_name" required>
+      <label for="contact_title">Cargo del contacto:</label>
+      <input type="text" id="contact_title" name="contact_title" required>
+      <label for="address">Dirección:</label>
+      <input type="text" id="address" name="address" required>
+      <label for="city">Ciudad:</label>
+      <input type="text" id="city" name="city" required>
+      <label for="region">Región:</label>
+      <input type="text" id="region" name="region">
+      <label for="postal_code">Código postal:</label>
+      <input type="text" id="postal_code" name="postal_code" required>
+      <label for="country">País:</label>
+      <input type="text" id="country" name="country" required>
+      <label for="phone">Teléfono:</label>
+      <input type="tel" id="phone" name="phone" required>
+      <label for="fax">Fax:</label>
+      <input type="tel" id="fax" name="fax">
+      <button id="addCliente">Añadir</button>
     </div>
   </div>
 </div>
+
         <div class="row p-5">
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Fixed Header Table</h3>
+                <h3 class="card-title">Clientes</h3>
 
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
@@ -162,28 +179,9 @@
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0" style="height: 300px;">
                 <table class="table table-head-fixed text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>User</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                      <th>Reason</th>
-                      <th>Acciones</th>
-                    </tr>
+                  <thead id="cabeceraTabla">
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-success">Approved</span></td>
-                      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                      <td>
-                        <a href="#"><i class="fas fa-trash-alt m-2"></i></a>
-                        <a href="#"><i class="far fa-edit m-2"></i></a>
-                      </td>
-                    </tr>
+                  <tbody id="cuerpoTabla">
                   </tbody>
                 </table>
               </div>
@@ -223,15 +221,8 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script src="js/clientes.js" defer></script>
 
-<script>
-  var myModal = document.getElementById('exampleModal')
-var myInput = document.getElementById('myInput')
-
-myModal.addEventListener('shown.bs.modal', function () {
-  myInput.focus()
-})
-</script>
 </body>
 
 </html>
