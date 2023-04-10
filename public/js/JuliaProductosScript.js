@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   let closeModal = document.getElementById("closeModal");
   let saveChanges = document.getElementById("anadirProducto");
   let title = document.querySelector(".modal-title");
+  let inputId = document.getElementById("product_id");
+  let labelId = inputId.previousElementSibling;
 
   await showProducts();
 
@@ -41,6 +43,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     myModal.style.display = "block";
     saveChanges.innerHTML = "Guardar producto";
     title.innerHTML = "Guardar producto";
+    inputId.setAttribute('hidden', 'true');
+    labelId.setAttribute('hidden', 'true');
+
     addOptionsModal();
   });
 
@@ -53,6 +58,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     myModal.style.display = "block";
     saveChanges.innerHTML = "Modificar producto";
     title.innerHTML = "Modificar producto";
+    inputId.removeAttribute('hidden');
+    labelId.removeAttribute('hidden');
+
     addOptionsModal();
     await anadirDatosFormulario(element);
   }
